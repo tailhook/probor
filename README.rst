@@ -75,10 +75,10 @@ Actually the object can be serialized like this:
 
    {"total_results": 1100,
     "results": [{"url": "http://example.com",
-                 "title": "Example Com"}),
+                 "title": "Example Com"},
                 {"url": "http://example.org",
                  "title": "Example Org",
-                 "snippet": "Example organization"})]}
+                 "snippet": "Example organization"}]}
 
 And this would also be **totally valid** serialized representation. I.e. you
 can store fields both by names and by numbers. This is ocasionally useful for
@@ -225,16 +225,16 @@ Is encoded like this in python:
 
     from probor import enum
 
-    class HTMLElement:
+    class HtmlElement:
         """Base class"""
 
-    class Tag(HTMLElement):
+    class Tag(HtmlElement):
         def __init__(self, tag_name, children):
             # .. snip ..
 
         probor_protocol = ...
 
-    class Text(HTMLElement):
+    class Text(HtmlElement):
 
         def __init__(self, text)
             self.text = text
@@ -242,13 +242,17 @@ Is encoded like this in python:
         probor_protocol = ...
 
 
-    HTMLElement.probor_protocol = enum({
+    HtmlElement.probor_protocol = enum({
         (0, 'Tag'): Tag,
         (1, 'Text'): Text,
         })
 
 Then you can do pattern-matching-like things by using
 ``functools.singledispatch`` (in Python3.4) or just use ``isinstance``.
+
+.. note:: The purescript compiles compiles types similarly. It's unchecked but
+   I believe probor's searization into javascript, should be compatible with
+   purescript types.
 
 
 Forward/Backward Compatibility
