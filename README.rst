@@ -22,6 +22,15 @@ And protobuf has the following limitations:
 * Semantics of fields are somewhat strange (e.g. what is repeated field?
   why not an array?)
 
+Other similar projects, have the following significant donwsides:
+
+* Avro requires schema to be save along with data (this is required to parse
+  data correctly especially for schema upgrades)
+* Thrift has no documentation of wire format, and relies on code generation.
+  Also thrift bindings usually contain some "service" implementation which is
+  too much cruft if you need just a serializer.
+
+
 So what probor contains:
 
 1. Schema definition language
