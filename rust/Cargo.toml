@@ -1,0 +1,12 @@
+[package]
+name = "probor"
+version = "0.1.0"
+authors = ["Paul Colomiets <paul@colomiets.name>"]
+
+[dependencies]
+cbor-codec = "*"
+byteorder = "*"
+
+[lib]
+name = "probor"
+path = "src/lib.rs"
