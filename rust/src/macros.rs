@@ -1,9 +1,9 @@
 
 #[macro_export]
 macro_rules! probor_struct {
-    (#[$tag:meta]
-     $name:ident { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }) => {
-        #[$tag]
+    ( $( #[$tag:meta] )* struct $name:ident
+      { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }) => {
+        $( #[$tag] )*
         struct $name {
             $( $item: $typ, )*
         }
@@ -46,7 +46,7 @@ mod test {
 
     probor_struct!(
     #[derive(PartialEq, Eq, Debug)]
-    Page {
+    struct Page {
         url: String => (#0),
         title: String => (#1),
         snippet: Option<String> => (#2 optional),
@@ -54,7 +54,7 @@ mod test {
 
     probor_struct!(
     #[derive(PartialEq, Eq, Debug)]
-    SearchResults {
+    struct SearchResults {
         total_results: u64 => (#0),
         results: Vec<Page> => (#1),
     });

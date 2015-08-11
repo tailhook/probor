@@ -6,7 +6,7 @@ use std::io::Cursor;
 
 probor_struct!(
 #[derive(PartialEq, Eq, Debug)]
-Page {
+struct Page {
     url: String => (#0),
     title: String => (#1),
     snippet: Option<String> => (#2 optional),
@@ -14,7 +14,7 @@ Page {
 
 probor_struct!(
 #[derive(PartialEq, Eq, Debug)]
-SearchResults {
+struct SearchResults {
     total_results: u64 => (#0),
     results: Vec<Page> => (#1),
 });
