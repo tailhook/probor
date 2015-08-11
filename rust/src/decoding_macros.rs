@@ -65,12 +65,12 @@ macro_rules! probor_dec_struct {
                             { $( $item => ( $($props)* ), )* });
                     }
                 }
-                Err(::probor::_cbor::DecodeError::UnexpectedType {
-                    datatype: ::probor::_cbor::types::Type::Null, .. }) => {
+                Err($crate::_cbor::DecodeError::UnexpectedType {
+                    datatype: $crate::_cbor::types::Type::Null, .. }) => {
                     return Ok(None);
                 }
-                Err(::probor::_cbor::DecodeError::UnexpectedType {
-                    datatype: ::probor::_cbor::types::Type::Object, .. }) => {
+                Err($crate::_cbor::DecodeError::UnexpectedType {
+                    datatype: $crate::_cbor::types::Type::Object, .. }) => {
                     unimplemented!(); // Decode as mapping
                 }
                 Err(e) => {

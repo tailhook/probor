@@ -10,8 +10,8 @@ macro_rules! probor_struct {
 
         impl $crate::Encodable for $name {
             fn encode<W: $crate::Output>(&self,
-                e: &mut ::probor::_cbor::Encoder<W>)
-                -> Result<(), ::probor::_cbor::EncodeError>
+                e: &mut $crate::_cbor::Encoder<W>)
+                -> Result<(), $crate::_cbor::EncodeError>
             {
                 probor_enc_struct!(e, self, {
                     $( $item => ( $($props)* ), )*
@@ -21,7 +21,7 @@ macro_rules! probor_struct {
         }
         impl $crate::Decodable for $name {
             fn decode_opt<R: $crate::Input>(
-                d: &mut ::probor::_cbor::Decoder<R>)
+                d: &mut $crate::_cbor::Decoder<R>)
                 -> Result<Option<Self>, $crate::DecodeError>
             {
                 probor_dec_struct!(d, {
