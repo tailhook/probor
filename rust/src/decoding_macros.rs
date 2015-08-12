@@ -56,7 +56,7 @@ macro_rules! _probor_parse_fields_num {
 #[macro_export]
 macro_rules! probor_dec_struct {
     ($decoder:expr, { $( $item:ident => ( $($props:tt)* ), )* } ) => {
-        let ( $($item),* ) = {
+        let ( $($item,)* ) = {
             $(_probor_define_var!($item);)*
             match $decoder.array() {
                 Ok(array_len) => {
@@ -78,7 +78,7 @@ macro_rules! probor_dec_struct {
                         "array or object expected", e));
                 }
             }
-            ( $( _probor_require_field![ $item $($props)* ] ),* )
+            ( $( _probor_require_field![ $item $($props)* ], )* )
         };
     }
 }

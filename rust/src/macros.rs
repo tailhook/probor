@@ -37,11 +37,9 @@ macro_rules! probor_struct {
 
 
 #[cfg(test)]
-mod test {
-    use cbor::{Encoder};
-    use {Encodable};
+mod test_search_results {
+    use {Encodable, Decodable, Encoder, Decoder, Config};
     use std::io::Cursor;
-    use cbor::{Decoder, Config};
     use {decode};
 
     probor_struct!(
@@ -104,6 +102,25 @@ mod test {
                 snippet: Some("Example Two".to_string()),
             }],
         }, val);
+    }
+
+    probor_struct!(
+    struct VersionInfo {
+        version: u8 => (#0),
+    });
+
+    fn roundtrip<V:Encodable+Decodable>(v: V) -> V {
+        let mut e = Encoder::new(Vec::new());
+        v.encode(&mut e).unwrap();
+        let mut d = &mut Decoder::new(Config::default(),
+            Cursor::new(e.into_writer()));
+        decode(d).unwrap()
+    }
+
+    #[test]
+    fn one_field() {
+        let v = VersionInfo { version: 1};
+        assert_eq!(roundtrip(v).version, 1);
     }
 
 }
