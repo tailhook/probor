@@ -23,7 +23,6 @@ macro_rules! _probor_require_field {
     };
 }
 
-
 #[macro_export]
 macro_rules! _probor_parse_fields_num {
     ($decoder:expr, $idx:expr, {}) => {
@@ -54,13 +53,14 @@ macro_rules! _probor_parse_fields_num {
 }
 
 #[macro_export]
-macro_rules! probor_dec_struct {
+macro_rules! _probor_dec_struct {
     ($decoder:expr, { $( $item:ident => ( $($props:tt)* ), )* } ) => {
         let ( $($item,)* ) = {
             $(_probor_define_var!($item);)*
             match $decoder.array() {
                 Ok(array_len) => {
                     for idx in 0..array_len {
+                        (idx); // silence warning but expect to be optimized
                         _probor_parse_fields_num!($decoder, idx,
                             { $( $item => ( $($props)* ), )* });
                     }
@@ -70,8 +70,14 @@ macro_rules! probor_dec_struct {
                     return Ok(None);
                 }
                 Err($crate::_cbor::DecodeError::UnexpectedType {
-                    datatype: $crate::_cbor::types::Type::Object, .. }) => {
-                    unimplemented!(); // Decode as mapping
+                    datatype: $crate::_cbor::types::Type::Object,
+                    info: inf @ 0...30
+                }) => {
+                    let object_num = try!($decoder.kernel().unsigned(inf)
+                        .map_err(|e| $crate::DecodeError::ExpectationFailed(
+                            "array or object expected", e)));
+                    _probor_dec_named!($decoder, object_num,
+                        { $( $item => ($($props)* ), )* });
                 }
                 Err(e) => {
                     return Err($crate::DecodeError::ExpectationFailed(
@@ -81,4 +87,58 @@ macro_rules! probor_dec_struct {
             ( $( _probor_require_field![ $item $($props)* ], )* )
         };
     }
+}
+
+#[macro_export]
+macro_rules! _probor_uint_type {
+    ($val:expr) => {
+        $val == $crate::_cbor::types::Type::UInt8
+        || $val == $crate::_cbor::types::Type::UInt16
+        || $val == $crate::_cbor::types::Type::UInt32
+        || $val == $crate::_cbor::types::Type::UInt64
+    }
+}
+
+#[macro_export]
+macro_rules! _probor_dec_named {
+    ($decoder:expr, $nfields:expr,
+        { $( $item:ident => ( $($props:tt)* ), )* } )
+    => {
+        for _ in 0..$nfields {
+            match $decoder.text() {
+                $(
+                    Ok(ref name) if &name[..] == stringify!($item) => {
+                        $item = try!($crate::Decodable::decode_opt($decoder)
+                            .map_err(|e| $crate::DecodeError::BadFieldValue(
+                                stringify!($item), Box::new(e))));
+                    }
+                )*
+                Ok(_) => {
+                    try!($decoder.skip().map_err(|e|
+                        $crate::DecodeError::SkippingError(e)));
+                }
+                Err($crate::_cbor::DecodeError::UnexpectedType {
+                    datatype: ty, info: inf }) if _probor_uint_type!(ty)
+                => {
+                    let idx = try!($decoder.kernel().u64(&(ty, inf))
+                        .map_err(|e| $crate::DecodeError::ExpectationFailed(
+                            "array or object expected", e)));
+                    (idx); // silence warning but expect to be optimized
+                    _probor_parse_fields_num!($decoder, idx,
+                        { $( $item => ( $($props)* ), )* });
+                }
+                Err(e) => {
+                    return Err($crate::DecodeError::ExpectationFailed(
+                        "array or object expected", e));
+                }
+            }
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! probor_dec_struct {
+    ($decoder:expr, { $( $item:ident => ($($props:tt)* ), )* } ) => {
+        _probor_dec_struct!($decoder, { $( $item => ($($props)* ), )* });
+    };
 }
