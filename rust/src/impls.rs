@@ -170,3 +170,39 @@ impl Encodable for i8 {
         e.i8(*self)
     }
 }
+
+impl Decodable for f64 {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        // TODO(tailhook) implement text iterator
+        let res = try!(opt(e.f64())
+            .map_err(|e| DecodeError::WrongType("i8 expected", e)));
+        Ok(res)
+    }
+}
+
+impl Encodable for f64 {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        e.f64(*self)
+    }
+}
+
+impl Decodable for f32 {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        // TODO(tailhook) implement text iterator
+        let res = try!(opt(e.f32())
+            .map_err(|e| DecodeError::WrongType("i8 expected", e)));
+        Ok(res)
+    }
+}
+
+impl Encodable for f32 {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        e.f32(*self)
+    }
+}
