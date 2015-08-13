@@ -4,6 +4,8 @@ extern crate byteorder;
 
 mod traits;
 mod impls;
+mod tuples;
+mod sequences;
 mod errors;
 #[macro_use] mod encoding_macros;
 #[macro_use] mod decoding_macros;
@@ -12,6 +14,7 @@ mod macros;
 
 pub use traits::Encodable;
 pub use traits::Decodable;
+pub use traits::Decode;
 pub use traits::Input;
 pub use traits::Output;
 pub use traits::decode;

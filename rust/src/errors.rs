@@ -5,6 +5,7 @@ use std::fmt::{self, Formatter, Debug, Display};
 
 pub enum DecodeError {
     AbsentField(&'static str),
+    WrongArrayLength(usize),
     UnexpectedNull,
     ExpectationFailed(&'static str, cbor::DecodeError),
     BadFieldValue(&'static str, Box<DecodeError>),
@@ -17,6 +18,7 @@ impl Debug for DecodeError {
         use self::DecodeError::*;
         match self {
             &AbsentField(field) => write!(fmt, "absent field {:?}", field),
+            &WrongArrayLength(n) => write!(fmt, "wrong array length {:?}", n),
             &UnexpectedNull => write!(fmt, "null is not expected"),
             &ExpectationFailed(exp, ref err)
             => write!(fmt, "{}: {}", exp, err),
@@ -35,6 +37,7 @@ impl Display for DecodeError {
         use self::DecodeError::*;
         match self {
             &AbsentField(field) => write!(fmt, "absent field {:?}", field),
+            &WrongArrayLength(n) => write!(fmt, "wrong array length {:?}", n),
             &UnexpectedNull => write!(fmt, "null is not expected"),
             &ExpectationFailed(exp, ref err)
             => write!(fmt, "{}: {}", exp, err),
@@ -53,6 +56,7 @@ impl Error for DecodeError {
         use self::DecodeError::*;
         match self {
             &AbsentField(_) => "absent field",
+            &WrongArrayLength(_) => "wrong array length",
             &UnexpectedNull => "unexpected null",
             &ExpectationFailed(exp, _) => exp,
             &BadFieldValue(_, _) => "bad field value",
@@ -64,6 +68,7 @@ impl Error for DecodeError {
         use self::DecodeError::*;
         match self {
             &AbsentField(_) => None,
+            &WrongArrayLength(_) => None,
             &UnexpectedNull => None,
             &ExpectationFailed(_, ref err) => Some(err),
             &BadFieldValue(_, ref err) => Some(&**err),
@@ -72,3 +77,4 @@ impl Error for DecodeError {
         }
     }
 }
+
