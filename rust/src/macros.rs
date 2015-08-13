@@ -1,14 +1,7 @@
-
-/// Declares structure
 #[macro_export]
-macro_rules! probor_struct {
-    ( $( #[$tag:meta] )* struct $name:ident
-      { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }) => {
-        $( #[$tag] )*
-        struct $name {
-            $( $item: $typ, )*
-        }
-
+macro_rules! _probor_enc_dec {
+    ($name:ident { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
+    ) => {
         impl $crate::Encodable for $name {
             fn encode<W: $crate::Output>(&self,
                 e: &mut $crate::_cbor::Encoder<W>)
@@ -34,6 +27,31 @@ macro_rules! probor_struct {
             }
         }
     }
+}
+
+/// Declares structure
+#[macro_export]
+macro_rules! probor_struct {
+    ( $( #[$tag:meta] )* pub struct $name:ident
+      { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
+    ) => {
+        $( #[$tag] )*
+        pub struct $name {
+            $( $item: $typ, )*
+        }
+
+        _probor_enc_dec!($name { $( $item: $typ => ( $($props)* ), )* });
+    };
+    ( $( #[$tag:meta] )* struct $name:ident
+      { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
+    ) => {
+        $( #[$tag] )*
+        struct $name {
+            $( $item: $typ, )*
+        }
+
+        _probor_enc_dec!($name { $( $item: $typ => ( $($props)* ), )* });
+    };
 }
 
 #[cfg(test)]
@@ -114,7 +132,7 @@ mod test_search_results {
     }
 
     probor_struct!(
-    struct VersionInfo {
+    pub struct VersionInfo {
         version: u8 => (),
     });
 
