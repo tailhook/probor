@@ -1,6 +1,6 @@
 #[macro_export]
-macro_rules! _probor_enc_dec {
-    ($name:ident { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
+macro_rules! probor_encoder_decoder {
+    ($name:ident { $( $item:ident => ( $($props:tt)* ), )* }
     ) => {
         impl $crate::Encodable for $name {
             fn encode<W: $crate::Output>(&self,
@@ -40,7 +40,7 @@ macro_rules! probor_struct {
             $( $item: $typ, )*
         }
 
-        _probor_enc_dec!($name { $( $item: $typ => ( $($props)* ), )* });
+        probor_encoder_decoder!($name { $( $item => ( $($props)* ), )* });
     };
     ( $( #[$tag:meta] )* struct $name:ident
       { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
@@ -50,7 +50,7 @@ macro_rules! probor_struct {
             $( $item: $typ, )*
         }
 
-        _probor_enc_dec!($name { $( $item: $typ => ( $($props)* ), )* });
+        probor_encoder_decoder!($name { $( $item => ( $($props)* ), )* });
     };
 }
 
