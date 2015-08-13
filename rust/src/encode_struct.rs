@@ -41,7 +41,6 @@ macro_rules! _probor_encode_pos_field {
     ($encoder:expr, $me:expr, $idx:expr, $field:ident #$n:tt) => {
         _probor_skip_to!($encoder, $idx, $n);
         try!($crate::Encodable::encode(&$me.$field, $encoder));
-        // TODO(tailhook) implement writing nulls instead
     };
     ($encoder:expr, $me:expr, $idx:expr, $field:ident optional) => {
         _probor_skip_to!($encoder, $idx, $n);
