@@ -17,7 +17,7 @@ impl Decodable for String {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.text())
-            .map_err(|e| DecodeError::ExpectationFailed("string expected", e)));
+            .map_err(|e| DecodeError::WrongType("string expected", e)));
         Ok(res)
     }
 }
@@ -35,7 +35,7 @@ impl Decodable for u64 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.u64())
-            .map_err(|e| DecodeError::ExpectationFailed("u64 expected", e)));
+            .map_err(|e| DecodeError::WrongType("u64 expected", e)));
         Ok(res)
     }
 }
@@ -53,7 +53,7 @@ impl Decodable for u32 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.u32())
-            .map_err(|e| DecodeError::ExpectationFailed("u32 expected", e)));
+            .map_err(|e| DecodeError::WrongType("u32 expected", e)));
         Ok(res)
     }
 }
@@ -70,7 +70,7 @@ impl Decodable for u16 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.u16())
-            .map_err(|e| DecodeError::ExpectationFailed("u16 expected", e)));
+            .map_err(|e| DecodeError::WrongType("u16 expected", e)));
         Ok(res)
     }
 }
@@ -88,7 +88,7 @@ impl Decodable for u8 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.u8())
-            .map_err(|e| DecodeError::ExpectationFailed("u8 expected", e)));
+            .map_err(|e| DecodeError::WrongType("u8 expected", e)));
         Ok(res)
     }
 }
@@ -106,7 +106,7 @@ impl Decodable for i64 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.i64())
-            .map_err(|e| DecodeError::ExpectationFailed("i64 expected", e)));
+            .map_err(|e| DecodeError::WrongType("i64 expected", e)));
         Ok(res)
     }
 }
@@ -124,7 +124,7 @@ impl Decodable for i32 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.i32())
-            .map_err(|e| DecodeError::ExpectationFailed("i32 expected", e)));
+            .map_err(|e| DecodeError::WrongType("i32 expected", e)));
         Ok(res)
     }
 }
@@ -141,7 +141,7 @@ impl Decodable for i16 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.i16())
-            .map_err(|e| DecodeError::ExpectationFailed("i16 expected", e)));
+            .map_err(|e| DecodeError::WrongType("i16 expected", e)));
         Ok(res)
     }
 }
@@ -159,7 +159,7 @@ impl Decodable for i8 {
     {
         // TODO(tailhook) implement text iterator
         let res = try!(opt(e.i8())
-            .map_err(|e| DecodeError::ExpectationFailed("i8 expected", e)));
+            .map_err(|e| DecodeError::WrongType("i8 expected", e)));
         Ok(res)
     }
 }

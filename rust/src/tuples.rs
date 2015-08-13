@@ -36,7 +36,7 @@ impl<A:Decodable> Decodable for (A,) {
         let len = match opt(d.array()) {
             Ok(Some(x)) => x,
             Ok(None) => return Ok(None),
-            Err(e) => return Err(DecodeError::ExpectationFailed(
+            Err(e) => return Err(DecodeError::WrongType(
                 "expected an array of one element", e)),
         };
         if len != 1 {
@@ -53,7 +53,7 @@ impl<A:Decodable, B:Decodable> Decodable for (A, B) {
         let len = match opt(d.array()) {
             Ok(Some(x)) => x,
             Ok(None) => return Ok(None),
-            Err(e) => return Err(DecodeError::ExpectationFailed(
+            Err(e) => return Err(DecodeError::WrongType(
                 "expected an array of two elements", e)),
         };
         if len != 2 {
@@ -71,7 +71,7 @@ impl<A:Decodable, B:Decodable, C:Decodable> Decodable for (A, B, C) {
         let len = match opt(d.array()) {
             Ok(Some(x)) => x,
             Ok(None) => return Ok(None),
-            Err(e) => return Err(DecodeError::ExpectationFailed(
+            Err(e) => return Err(DecodeError::WrongType(
                 "expected an array of three elements", e)),
         };
         if len != 3 {

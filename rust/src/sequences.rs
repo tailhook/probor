@@ -12,7 +12,7 @@ impl<T:Decodable> Decodable for Vec<T> {
         -> Result<Option<Self>, DecodeError>
     {
         let num_opt = try!(opt(e.array())
-            .map_err(|e| DecodeError::ExpectationFailed("array expected", e)));
+            .map_err(|e| DecodeError::WrongType("array expected", e)));
         if let Some(num) = num_opt {
             let mut res = Vec::new();
             for idx in 0..num {
@@ -41,7 +41,7 @@ impl<T:Decodable> Decodable for VecDeque<T> {
         -> Result<Option<Self>, DecodeError>
     {
         let num_opt = try!(opt(e.array())
-            .map_err(|e| DecodeError::ExpectationFailed("array expected", e)));
+            .map_err(|e| DecodeError::WrongType("array expected", e)));
         if let Some(num) = num_opt {
             let mut res = VecDeque::new();
             for idx in 0..num {

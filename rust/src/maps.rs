@@ -12,7 +12,7 @@ impl<K:Decodable+Hash+Eq, V:Decodable> Decodable for HashMap<K, V> {
         -> Result<Option<Self>, DecodeError>
     {
         let num_opt = try!(opt(e.object())
-            .map_err(|e| DecodeError::ExpectationFailed("object expected", e)));
+            .map_err(|e| DecodeError::WrongType("object expected", e)));
         if let Some(num) = num_opt {
             let mut res = HashMap::new();
             for _ in 0..num {

@@ -74,13 +74,13 @@ macro_rules! _probor_dec_struct {
                     info: inf @ 0...30
                 }) => {
                     let object_num = try!($decoder.kernel().unsigned(inf)
-                        .map_err(|e| $crate::DecodeError::ExpectationFailed(
+                        .map_err(|e| $crate::DecodeError::WrongType(
                             "array or object expected", e)));
                     _probor_dec_named!($decoder, object_num,
                         { $( $item => ($($props)* ), )* });
                 }
                 Err(e) => {
-                    return Err($crate::DecodeError::ExpectationFailed(
+                    return Err($crate::DecodeError::WrongType(
                         "array or object expected", e));
                 }
             }
@@ -121,14 +121,14 @@ macro_rules! _probor_dec_named {
                     datatype: ty, info: inf }) if _probor_uint_type!(ty)
                 => {
                     let idx = try!($decoder.kernel().u64(&(ty, inf))
-                        .map_err(|e| $crate::DecodeError::ExpectationFailed(
+                        .map_err(|e| $crate::DecodeError::WrongType(
                             "array or object expected", e)));
                     (idx); // silence warning but expect to be optimized
                     _probor_parse_fields_num!($decoder, idx,
                         { $( $item => ( $($props)* ), )* });
                 }
                 Err(e) => {
-                    return Err($crate::DecodeError::ExpectationFailed(
+                    return Err($crate::DecodeError::WrongType(
                         "array or object expected", e));
                 }
             }

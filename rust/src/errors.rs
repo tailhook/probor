@@ -8,7 +8,8 @@ pub enum DecodeError {
     WrongArrayLength(usize),
     DuplicateKey,
     UnexpectedNull,
-    ExpectationFailed(&'static str, cbor::DecodeError),
+    WrongType(&'static str, cbor::DecodeError),
+    WrongValue(&'static str),
     BadFieldValue(&'static str, Box<DecodeError>),
     BadArrayElement(usize, Box<DecodeError>),
     SkippingError(cbor::DecodeError),
@@ -22,8 +23,8 @@ impl Debug for DecodeError {
             &WrongArrayLength(n) => write!(fmt, "wrong array length {:?}", n),
             &DuplicateKey => write!(fmt, "some key is duplicated"),
             &UnexpectedNull => write!(fmt, "null is not expected"),
-            &ExpectationFailed(exp, ref err)
-            => write!(fmt, "{}: {}", exp, err),
+            &WrongType(exp, ref err) => write!(fmt, "{}: {}", exp, err),
+            &WrongValue(exp) => write!(fmt, "{}", exp),
             &BadFieldValue(field, ref err)
             => write!(fmt, "Bad value for {:?}: {}", field, err),
             &BadArrayElement(num, ref err)
@@ -42,8 +43,8 @@ impl Display for DecodeError {
             &WrongArrayLength(n) => write!(fmt, "wrong array length {:?}", n),
             &DuplicateKey => write!(fmt, "some key is duplicated"),
             &UnexpectedNull => write!(fmt, "null is not expected"),
-            &ExpectationFailed(exp, ref err)
-            => write!(fmt, "{}: {}", exp, err),
+            &WrongType(exp, ref err) => write!(fmt, "{}: {}", exp, err),
+            &WrongValue(exp) => write!(fmt, "{}", exp),
             &BadFieldValue(field, ref err)
             => write!(fmt, "Bad value for {:?}: {}", field, err),
             &BadArrayElement(num, ref err)
@@ -62,7 +63,8 @@ impl Error for DecodeError {
             &WrongArrayLength(_) => "wrong array length",
             &DuplicateKey => "some key is duplicated",
             &UnexpectedNull => "unexpected null",
-            &ExpectationFailed(exp, _) => exp,
+            &WrongType(exp, _) => exp,
+            &WrongValue(exp) => exp,
             &BadFieldValue(_, _) => "bad field value",
             &BadArrayElement(_, _) => "bad array element",
             &SkippingError(_) => "error when skipping value",
@@ -75,7 +77,8 @@ impl Error for DecodeError {
             &WrongArrayLength(_) => None,
             &DuplicateKey => None,
             &UnexpectedNull => None,
-            &ExpectationFailed(_, ref err) => Some(err),
+            &WrongType(_, ref err) => Some(err),
+            &WrongValue(_) => None,
             &BadFieldValue(_, ref err) => Some(&**err),
             &BadArrayElement(_, ref err) => Some(&**err),
             &SkippingError(ref err) => Some(err),
