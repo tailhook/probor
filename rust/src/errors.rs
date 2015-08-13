@@ -6,6 +6,7 @@ use std::fmt::{self, Formatter, Debug, Display};
 pub enum DecodeError {
     AbsentField(&'static str),
     WrongArrayLength(usize),
+    DuplicateKey,
     UnexpectedNull,
     ExpectationFailed(&'static str, cbor::DecodeError),
     BadFieldValue(&'static str, Box<DecodeError>),
@@ -19,6 +20,7 @@ impl Debug for DecodeError {
         match self {
             &AbsentField(field) => write!(fmt, "absent field {:?}", field),
             &WrongArrayLength(n) => write!(fmt, "wrong array length {:?}", n),
+            &DuplicateKey => write!(fmt, "some key is duplicated"),
             &UnexpectedNull => write!(fmt, "null is not expected"),
             &ExpectationFailed(exp, ref err)
             => write!(fmt, "{}: {}", exp, err),
@@ -38,6 +40,7 @@ impl Display for DecodeError {
         match self {
             &AbsentField(field) => write!(fmt, "absent field {:?}", field),
             &WrongArrayLength(n) => write!(fmt, "wrong array length {:?}", n),
+            &DuplicateKey => write!(fmt, "some key is duplicated"),
             &UnexpectedNull => write!(fmt, "null is not expected"),
             &ExpectationFailed(exp, ref err)
             => write!(fmt, "{}: {}", exp, err),
@@ -57,6 +60,7 @@ impl Error for DecodeError {
         match self {
             &AbsentField(_) => "absent field",
             &WrongArrayLength(_) => "wrong array length",
+            &DuplicateKey => "some key is duplicated",
             &UnexpectedNull => "unexpected null",
             &ExpectationFailed(exp, _) => exp,
             &BadFieldValue(_, _) => "bad field value",
@@ -69,6 +73,7 @@ impl Error for DecodeError {
         match self {
             &AbsentField(_) => None,
             &WrongArrayLength(_) => None,
+            &DuplicateKey => None,
             &UnexpectedNull => None,
             &ExpectationFailed(_, ref err) => Some(err),
             &BadFieldValue(_, ref err) => Some(&**err),

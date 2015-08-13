@@ -6,6 +6,7 @@ mod traits;
 mod impls;
 mod tuples;
 mod sequences;
+mod maps;
 mod errors;
 #[macro_use] mod encoding_macros;
 #[macro_use] mod decoding_macros;
