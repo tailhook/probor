@@ -86,15 +86,12 @@ macro_rules! probor_struct {
 mod test_search_results {
     use {Encodable, Decodable, Encoder, Decoder, Config};
     use std::io::Cursor;
-    use {decode};
+    use {decode, to_buf, from_slice};
 
     fn roundtrip<A:Encodable, B:Decodable>(v: A) -> B {
-        let mut e = Encoder::new(Vec::new());
-        v.encode(&mut e).unwrap();
-        let v = e.into_writer();
+        let v = to_buf(&v);
         println!("Data {:?} {:?}", String::from_utf8_lossy(&v), v);
-        let mut d = &mut Decoder::new(Config::default(), Cursor::new(&v[..]));
-        decode(d).unwrap()
+        from_slice(&v).unwrap()
     }
 
     probor_struct!(

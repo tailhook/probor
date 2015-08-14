@@ -12,6 +12,7 @@ mod errors;
 #[macro_use] mod decode_struct;
 mod enums;
 mod macros;
+mod util;
 
 
 pub use traits::Encodable;
@@ -20,6 +21,7 @@ pub use traits::Decode;
 pub use traits::Input;
 pub use traits::Output;
 pub use traits::decode;
+pub use util::{to_buf, from_slice};
 
 // Convenience reexports
 pub use errors::DecodeError;
