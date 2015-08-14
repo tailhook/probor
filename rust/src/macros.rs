@@ -1,5 +1,5 @@
 #[macro_export]
-macro_rules! probor_struct_encoder_decoder {
+macro_rules! probor_struct_encoder {
     ($name:ident { $( $item:ident => ( $($props:tt)* ), )* }
     ) => {
         impl $crate::Encodable for $name {
@@ -13,6 +13,13 @@ macro_rules! probor_struct_encoder_decoder {
                 Ok(())
             }
         }
+    }
+}
+
+#[macro_export]
+macro_rules! probor_struct_decoder {
+    ($name:ident { $( $item:ident => ( $($props:tt)* ), )* }
+    ) => {
         impl $crate::Decodable for $name {
             fn decode_opt<R: $crate::Input>(
                 d: &mut $crate::_cbor::Decoder<R>)
@@ -26,6 +33,14 @@ macro_rules! probor_struct_encoder_decoder {
                 }))
             }
         }
+    }
+}
+#[macro_export]
+macro_rules! probor_struct_encoder_decoder {
+    ($name:ident { $( $item:ident => ( $($props:tt)* ), )* }
+    ) => {
+        probor_struct_encoder!($name { $( $item => ( $($props)* ), )* } );
+        probor_struct_decoder!($name { $( $item => ( $($props)* ), )* } );
     }
 }
 
