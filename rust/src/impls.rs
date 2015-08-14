@@ -206,3 +206,43 @@ impl Encodable for f32 {
         e.f32(*self)
     }
 }
+
+#[cfg(target_pointer_width="64")]
+impl Decodable for usize {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        // TODO(tailhook) implement text iterator
+        let res = try!(opt(e.u64().map(|x| x as usize))
+            .map_err(|e| DecodeError::WrongType("usize expected", e)));
+        Ok(res)
+    }
+}
+
+#[cfg(target_pointer_width="64")]
+impl Encodable for usize {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        e.u64(*self as u64)
+    }
+}
+
+#[cfg(target_pointer_width="32")]
+impl Decodable for usize {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        // TODO(tailhook) implement text iterator
+        let res = try!(opt(e.u32().map(|x| x as usize))
+            .map_err(|e| DecodeError::WrongType("usize expected", e)));
+        Ok(res)
+    }
+}
+
+#[cfg(target_pointer_width="32")]
+impl Encodable for usize {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        e.u32(*self as u32)
+    }
+}
