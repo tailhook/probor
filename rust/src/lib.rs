@@ -1,5 +1,6 @@
 extern crate cbor;
 extern crate byteorder;
+#[cfg(feature="regex_serde")] extern crate regex;
 
 
 mod traits;
@@ -13,6 +14,7 @@ mod errors;
 mod enums;
 mod macros;
 mod util;
+#[cfg(feature="regex_serde")] mod regex_serde;
 
 
 pub use traits::Encodable;
