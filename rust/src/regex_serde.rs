@@ -1,5 +1,4 @@
 use cbor::{Decoder, Encoder};
-use cbor::decoder::opt;
 use {Decodable, Input, DecodeError};
 use {Encodable, Output, EncodeError};
 use regex::Regex;

@@ -7,7 +7,7 @@ impl<A:Decodable> Decodable for Option<A> {
     fn decode_opt<R: Input>(e: &mut Decoder<R>)
         -> Result<Option<Self>, DecodeError>
     {
-        A::decode_opt(e).map(|x| Some(x))
+        A::decode_opt(e).map(Some)
     }
 }
 
@@ -18,6 +18,21 @@ impl<A:Encodable> Encodable for Option<A> {
             &Some(ref x) => x.encode(e),
             &None => e.null(),
         }
+    }
+}
+
+impl<A:Decodable> Decodable for Box<A> {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        A::decode_opt(e).map(|x| x.map(Box::new))
+    }
+}
+
+impl<A:Encodable> Encodable for Box<A> {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        (**self).encode(e)
     }
 }
 
