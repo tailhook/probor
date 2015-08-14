@@ -36,6 +36,13 @@ impl<A:Encodable> Encodable for Box<A> {
     }
 }
 
+impl<'x, T:Encodable> Encodable for &'x T {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        (**self).encode(e)
+    }
+}
+
 impl Decodable for String {
     fn decode_opt<R: Input>(e: &mut Decoder<R>)
         -> Result<Option<Self>, DecodeError>
