@@ -11,6 +11,16 @@ impl<A:Decodable> Decodable for Option<A> {
     }
 }
 
+impl<A:Encodable> Encodable for Option<A> {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        match self {
+            &Some(ref x) => x.encode(e),
+            &None => e.null(),
+        }
+    }
+}
+
 impl Decodable for String {
     fn decode_opt<R: Input>(e: &mut Decoder<R>)
         -> Result<Option<Self>, DecodeError>
