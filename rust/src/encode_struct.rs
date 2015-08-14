@@ -34,7 +34,7 @@ macro_rules! _probor_encode_pos_field {
     ($encoder:expr, $me:expr, $idx:expr, $field:ident #$n:tt optional) => {
         _probor_skip_to!($encoder, $idx, $n);
         match $me.$field {
-            Some(ref x) => try!(Encodable::encode(x, $encoder)),
+            Some(ref x) => try!($crate::Encodable::encode(x, $encoder)),
             None => try!($encoder.null()),
         }
     };
@@ -45,7 +45,7 @@ macro_rules! _probor_encode_pos_field {
     ($encoder:expr, $me:expr, $idx:expr, $field:ident optional) => {
         _probor_skip_to!($encoder, $idx, $n);
         match $me.$field {
-            Some(ref x) => try!(Encodable::encode(x, $encoder)),
+            Some(ref x) => try!($crate::Encodable::encode(x, $encoder)),
             None => try!($encoder.null()),
         }
     };
@@ -60,7 +60,7 @@ macro_rules! _probor_encode_field {
     ($encoder:expr, $me:expr, $idx:expr, $field:ident #$n:tt optional) => {
         try!($encoder.u64(_probor_index!($n)));
         match $me.$field {
-            Some(ref x) => try!(Encodable::encode(x, $encoder)),
+            Some(ref x) => try!($crate::Encodable::encode(x, $encoder)),
             None => try!($encoder.null()),
         }
     };
@@ -71,7 +71,7 @@ macro_rules! _probor_encode_field {
     ($encoder:expr, $me:expr, $idx:expr, $field:ident optional) => {
         try!($encoder.text(stringify!($field)));
         match $me.$field {
-            Some(ref x) => try!(Encodable::encode(x, $encoder)),
+            Some(ref x) => try!($crate::Encodable::encode(x, $encoder)),
             None => try!($encoder.null()),
         }
     };
