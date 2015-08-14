@@ -32,6 +32,19 @@ macro_rules! probor_struct_encoder_decoder {
 /// Declares structure
 #[macro_export]
 macro_rules! probor_struct {
+    // Public struct with public fields
+    ( $( #[$tag:meta] )* pub struct $name:ident
+      { $(pub $item:ident: $typ:ty => ( $($props:tt)* ), )* }
+    ) => {
+        $( #[$tag] )*
+        pub struct $name {
+            $(pub $item: $typ, )*
+        }
+
+        probor_struct_encoder_decoder!($name
+            { $( $item => ( $($props)* ), )* });
+    };
+    // Public struct with private fields
     ( $( #[$tag:meta] )* pub struct $name:ident
       { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
     ) => {
@@ -43,6 +56,19 @@ macro_rules! probor_struct {
         probor_struct_encoder_decoder!($name
             { $( $item => ( $($props)* ), )* });
     };
+    // Private struct with public fields
+    ( $( #[$tag:meta] )* struct $name:ident
+      { $(pub $item:ident: $typ:ty => ( $($props:tt)* ), )* }
+    ) => {
+        $( #[$tag] )*
+        struct $name {
+            $(pub $item: $typ, )*
+        }
+
+        probor_struct_encoder_decoder!($name
+            { $( $item => ( $($props)* ), )* });
+    };
+    // Private struct with private fields
     ( $( #[$tag:meta] )* struct $name:ident
       { $( $item:ident: $typ:ty => ( $($props:tt)* ), )* }
     ) => {
@@ -135,13 +161,13 @@ mod test_search_results {
 
     probor_struct!(
     pub struct VersionInfo {
-        version: u8 => (),
+        pub version: u8 => (),
     });
 
 
     #[test]
     fn one_field() {
-        let v = VersionInfo { version: 1};
+        let v = VersionInfo { version: 1 };
         let mut e = Encoder::new(Vec::new());
         v.encode(&mut e).unwrap();
         let vec = e.into_writer();
