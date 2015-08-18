@@ -5,39 +5,153 @@ Probor
 
 :Status: Proof of Concept
 
+Probor is an extensible mechanism for serializing structured data on top of
+CBOR_.
 
-Probor is a protocol on top of CBOR_ that provides protobuf_-like functionality.
+In additional to CBOR_ probor has the following:
 
-In particular CBOR has following limitations:
+1. A library to efficiently read data into language native structures
 
-* Transmitting lots of small objects is expensive because keys are encoded in
-  each object
-* No standard schema for serializing algebraic types
-* Lack of type casting by default
+2. A schema definition language that serves as a documentation for
+   interoperability between systems
 
-And protobuf has the following limitations:
+3. A more compact protocol which omits field names for objects
 
-* Can't parse data if no schema known (or no code generated at your fingertips)
-* Generated types don't look like native (i.e. type casting required anyway)
-* Semantics of fields are somewhat strange (e.g. what is repeated field?
-  why not an array?)
-
-Other similar projects, have the following significant donwsides:
-
-* Avro requires schema to be save along with data (this is required to parse
-  data correctly especially for schema upgrades)
-* Thrift has no documentation of wire format, and relies on code generation.
-  Also thrift bindings usually contain some "service" implementation which is
-  too much cruft if you need just a serializer.
+4. Conventions to make schema backwards compatible
 
 
-So what probor contains:
+Why?
+====
 
-1. Schema definition language
-2. A description how objects are stored in CBOR_ format
-3. A description of backward/forward compatibility rules
-4. (De)serialization library that doesn't rely on code generation
-5. Optional code generator for scaffolding
+We like CBOR_ for the following:
+
+1. It's IETF standard
+
+2. It's self-descriptive
+
+3. It's compact enought
+
+4. It's extensive_ including mind-boggling_ things
+
+5. It has implementations in most languages
+
+.. _extensive: http://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml
+.. _mind-boggling: https://github.com/paroga/cbor-js/issues/3
+
+What we lack in CBOR_:
+
+1. No schema definition, i.e. can't check interoperability between systems
+
+2. Transmitting/storing lots of objects is expensive because keys are encoded
+   for every object
+
+3. No standard way to cast "object" (i.e. a map or a dict) into native typed
+   object
+
+
+Comparison
+==========
+
+This section roughly compares similar projects to see second our arguments in
+"Why?" section. Individual arguments may not be very convincing by they are
+reasonable enough in total.
+
+
+Probor vs Protobuf
+------------------
+
+Protobuf_ Can't parse data if no schema known. *Probor* is not always totally
+readable, but at least you can unpack the data using generic *cbor* decoder and
+look at raw values (presumably without key names).
+
+And it's not only hard when schema is unknown, but when you have a schema but
+no code generated to inspect it. For example if you have a java application,
+but want to inspect some code in python. You need a pythonic code generator and
+generate code before you can read anything with *protobuf*.
+
+*Probor* also has debugging (non-compact) mode in which it may encode object
+and enums by name so you can easily understand the values. You can also keep
+key names for most objects except ones that are transmitted in large
+quantities, because compact and non-compact formats are compatible. You are in
+control.
+
+The types that *Protobuf* generates are not native. So they are larger and
+hard to work with. Because code is generated you usually can't add methods
+to the object itself without subtle hacks. *Probor* tries to provide thin layer
+around native objects.
+
+Also working with a code generation is inconvenient. *Protobuf* has a code
+generator written in C++ which you need to have installed. Moreover you often
+need another version of protobuf code generator for every language. *Probor*
+works without code generation for all currently supported languages
+by providing simple to use macros and/or annotations to native types. We may
+provide code generation facilities too for bootstrapping the code, but they
+should be done purely in the language they generate.
+
+On the upside of *Protobuf* it can deserialize lookup object and serialize
+again without loosing any information (even fields that are not in his version
+of a protocol). For *probor* it's not implemented in current libraries for
+effiency reasons, but it can be done with apropriate libraries anyway.
+
+.. _Protobuf: https://github.com/google/protobuf
+
+Probor vs Avro
+--------------
+
+Avro_ needs a schema to be transported "in-band", i.e. as a prefix to a data
+send. We find this redundant.
+
+Also *Avro* types are somewhat historic from C era. We wanted modern algebraic
+types like they are in Rust or Haskell.
+
+Also *avro* file format is not in IETF spec and does not have such interesting
+extensions like CBOR_ `has`__.
+
+__ mind-boggling_
+
+.. _avro: https://avro.apache.org/
+
+
+Probor vs Thrift
+----------------
+
+Thhift doesn't have good description of the binary format (in fact it has two
+both are not documented in any sensible way) unlike CBOR_ which is IETF
+standard. Do the data is hard to read without having code generated in advance.
+
+*Thrift* also has ugly union type from 1990x, comparing to nice algebraic types
+which we want to use in 2015.
+
+*Thrift* relies on code generation for parsing data which we don't like because
+it makes programs hard to build and it's hard to integrate with native
+types (i.e. add a method to generated type).
+
+Also *thrift* bindings usually have some implementation of *services*
+which usually is a cruft because there are too much ways for dealing with
+network in each language to have all of them implemented by thrift authors.
+Furthermore *thrift* has long gistory of generating code that can't be network
+IO agnostic.
+
+.. _thrift: http://thrift.apache.org/
+
+
+Probor vs Capnproto
+===================
+
+*Capnproto* has ugly and complex serialization format which is useful for
+mapping values directly into memory without decoding. But its more complex to
+implement correctly than what we target for. We also wanted compact encoding
+which *Capnproto* has but it's built on top of already hard to understand
+encoding and complicates things even more.
+
+*Capnproto* like other relies on code generation with ugly protocol objects
+as result of decoding, but we wanted native types.
+
+.. _capnproto: https://capnproto.org/
+
+
+Look-a-Like
+===========
 
 For example, here is schema::
 
@@ -55,11 +169,11 @@ Note the following things:
 
 * We use generic type names like int (integer), not fixed width (see FAQ)
 * We give each field a number, they are similar to ones used in other
-  IDL's (like protobuf or capnproto)
+  IDL's (like protobuf, thrift or capnproto)
 
-The structure serialized with protobor will look like (diplaying
-json for clarity, in fact you will see exact this data if decode CBOR and
-encode with JSON):
+The structure serialized with probor will look like (diplaying json for
+clarity, in fact you will see exact this data if decode CBOR and encode with
+JSON):
 
 .. code-block:: json
 
@@ -194,7 +308,7 @@ because you are in control of at least the following things:
 3. How objects are created (e.g. use ``VecDeque`` or ``BTreeMap`` instead of
    default ``Vec`` and ``HashMap``)
 4. How missing fields are handled. E.g. you can provide default for missing
-   field instead of using ``Option<>``
+   field instead of using ``Option<T>``
 5. Can include application specific validation code
 
 At the end of the day writing parser explicitly with few helper macros looks
@@ -311,5 +425,4 @@ There are couple of reasons:
    or just equals to it.
 
 
-.. _Protobuf: https://github.com/google/protobuf
 .. _CBOR: http://cbor.io/
