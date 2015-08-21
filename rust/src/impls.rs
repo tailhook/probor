@@ -132,6 +132,24 @@ impl Encodable for u8 {
     }
 }
 
+impl Decodable for bool {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        // TODO(tailhook) implement text iterator
+        let res = try!(opt(e.bool())
+            .map_err(|e| DecodeError::WrongType("bool expected", e)));
+        Ok(res)
+    }
+}
+
+impl Encodable for bool {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        e.bool(*self)
+    }
+}
+
 impl Decodable for i64 {
     fn decode_opt<R: Input>(e: &mut Decoder<R>)
         -> Result<Option<Self>, DecodeError>
