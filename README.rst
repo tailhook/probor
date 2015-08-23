@@ -29,7 +29,7 @@ We like CBOR_ for the following:
 
 2. It's self-descriptive
 
-3. It's compact enought
+3. It's compact enough
 
 4. It's extensive_ including mind-boggling_ things
 
@@ -60,7 +60,7 @@ reasonable enough in total.
 Probor vs Protobuf
 ------------------
 
-Protobuf_ Can't parse data if no schema known. *Probor* is not always totally
+Protobuf_ can't parse data if no schema known. *Probor* is not always totally
 readable, but at least you can unpack the data using generic *cbor* decoder and
 look at raw values (presumably without key names).
 
@@ -115,7 +115,7 @@ __ mind-boggling_
 Probor vs Thrift
 ----------------
 
-Thhift doesn't have good description of the binary format (in fact it has two
+Thrift doesn't have good description of the binary format (in fact it has two
 both are not documented in any sensible way) unlike CBOR_ which is IETF
 standard. Do the data is hard to read without having code generated in advance.
 
@@ -129,7 +129,7 @@ types (i.e. add a method to generated type).
 Also *thrift* bindings usually have some implementation of *services*
 which usually is a cruft because there are too much ways for dealing with
 network in each language to have all of them implemented by thrift authors.
-Furthermore *thrift* has long gistory of generating code that can't be network
+Furthermore *thrift* has long history of generating code that can't be network
 IO agnostic.
 
 .. _thrift: http://thrift.apache.org/
@@ -171,7 +171,7 @@ Note the following things:
 * We give each field a number, they are similar to ones used in other
   IDL's (like protobuf, thrift or capnproto)
 
-The structure serialized with probor will look like (diplaying json for
+The structure serialized with probor will look like (displaying json for
 clarity, in fact you will see exact this data if decode CBOR and encode with
 JSON):
 
@@ -204,8 +204,8 @@ Actually the object can be serialized like this:
                  "snippet": "Example organization"}]}
 
 And this would also be **totally valid** serialized representation. I.e. you
-can store fields both by names and by numbers. This is ocasionally useful for
-ad-hoc requests or you may be willing to receive non-compact data from frontend
+can store fields both by names and by numbers. This is occasionally useful for
+ad-hoc requests or you may be willing to receive non-compact data from frontend,
 then validate and push data in more compact format for storage.
 
 In Python serialization looks like:
@@ -217,7 +217,7 @@ In Python serialization looks like:
     class Page(object):
 
         def __init__(self, url, title, snippet=None):
-            # .. your constructor .. omitted for brewity
+            # .. your constructor .. omitted for brevity
 
         probor_protocol = struct(
             required={(0, "url"): str, (1, "title"): str},
@@ -225,7 +225,7 @@ In Python serialization looks like:
 
     class SearchResults(object):
         def __init__(self, total_resutls, results):
-            # .. your constructor .. omitted for brewity
+            # .. your constructor .. omitted for brevity
 
         probor_protocol = struct(
             required={(0, "total_results"): int, (1, "results"): Page})
@@ -373,7 +373,7 @@ Is encoded like this in python:
 Then you can do pattern-matching-like things by using
 ``functools.singledispatch`` (in Python3.4) or just use ``isinstance``.
 
-.. note:: The purescript compiles compiles types similarly. It's unchecked but
+.. note:: The purescript compiles types similarly. It's unchecked but
    I believe probor's searization into javascript, should be compatible with
    purescript types.
 
@@ -421,7 +421,7 @@ There are couple of reasons:
 
 2. It's very application-specific if value that equals to default value may
    be omitted when serializing. And we want to use native structures for the
-   language without any additional bookeeping of whether the value is default
+   language without any additional bookkeeping of whether the value is default
    or just equals to it.
 
 
