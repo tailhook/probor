@@ -11,7 +11,7 @@ mod maps;
 mod errors;
 #[macro_use] mod encode_struct;
 #[macro_use] mod decode_struct;
-mod enums;
+#[macro_use] mod enums;
 mod macros;
 mod util;
 #[cfg(feature="regex_serde")] mod regex_serde;
