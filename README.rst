@@ -4,6 +4,7 @@ Probor
 
 
 :Status: Proof of Concept
+:Rust docs: http://tailhook.github.io/probor/
 
 Probor is an extensible mechanism for serializing structured data on top of
 CBOR_.
