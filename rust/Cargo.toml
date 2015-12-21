@@ -10,11 +10,11 @@ description = """
 """
 
 [dependencies]
-cbor-codec = { git = "git://github.com/twittner/cbor-codec" }
-byteorder = "*"
+cbor-codec = "0.4.2"
+byteorder = "0.4.2"
 
 [dependencies.regex]
-version = "*"
+version = "0.1.44"
 optional = true
 
 [features]
