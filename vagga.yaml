@@ -1,0 +1,32 @@
+commands:
+
+  make: !Command
+    description: Build the library
+    container: ubuntu
+    run: [cargo, build]
+
+  test: !Command
+    description: Test the library
+    container: ubuntu
+    run: [cargo, test]
+
+  cargo: !Command
+    description: Run arbitrary cargo command
+    container: ubuntu
+    run: [cargo]
+
+containers:
+
+  ubuntu:
+    setup:
+    - !Ubuntu trusty
+    - !UbuntuUniverse
+    - !Install [make, ca-certificates, build-essential]
+
+    - !TarInstall
+      url: "http://static.rust-lang.org/dist/rust-1.5.0-x86_64-unknown-linux-gnu.tar.gz"
+      script: "./install.sh --prefix=/usr \
+                --components=rustc,rust-std-x86_64-unknown-linux-gnu,cargo"
+
+    environ:
+      HOME: /work/target
