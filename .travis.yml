@@ -1,0 +1,24 @@
+language: rust
+rust:
+- 1.5.0
+- stable
+- beta
+- nightly
+sudo: false
+
+env:
+  secure: "ShMIv4jIh5XkZAjN/5BCaDYOliQ6lM6cEAdZmhWyw7/HmguwnidsX3t6zjUbGSqq0u7NrRRJn1OaBuWMiW9diSR+czyVK9e+zfbsoxuGH9QucZ0XnxG2AriurEopDdRJTC2KyDOBgYnoVSFumIWOwH4VAcy8b191qlFqdfAXrmV+4pQCNE78wtXh9MMSAWfmCTwhM8IIc2lU/24Qi63iGrmp5jEECFPat57OO0s24OBVv9HwpC6v/9+6zHTH2T5MfYHxy161n+1cnNIg9K63dbnvguNGdv7h4P7/G1YZq5lLUsQ6ZlQzreJZ/F3tr/ZPMt/CqdMnscZjy9TEAOqGQtJ3jCp4Ut85S0gJPpsI6kcTrLK/2i5S+mxX7pXGk5NtgzyPOWt8m+9JY+A5pvUHzkROqlRv4TEE75AdApPD+ElE2z/JXEhEPJVnjEfL6d2/3FkMMvCSiJFVgcEHWlVZfQ9J6dYUJ3vLCK10eGhwh2XLEwea4F5u7lIUv/brrmkTrVF+aXBJayjVPsDhni3exGltbryT5x5EWN0iwfV1ZVQtwb1J/2HMRB0tWYxfE9E6X8FLqoausljlHbdITGWY8W+UhMM1GwIaYCL4hkuCFzI0LvMvX91JaTgGpsyc1YCeSQuDxpYC2ah7pP1cK+ESfb3xEClEPTLyXUNA/upac0Y="
+
+script:
+- cd rust
+- cargo build --verbose
+- cargo test --verbose
+after_success: |
+  [ $TRAVIS_RUST_VERSION = stable ] &&
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  cargo doc &&
+  echo "<meta http-equiv=refresh content=0;url=`echo $TRAVIS_REPO_SLUG | cut -d '/' -f 2 | tr '-' '_'`/index.html>" > target/doc/index.html &&
+  pip install ghp-import --user &&
+  ~/.local/bin/ghp-import -n target/doc &&
+  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
