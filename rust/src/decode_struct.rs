@@ -60,7 +60,7 @@ macro_rules! _probor_dec_struct {
             match $decoder.array() {
                 Ok(array_len) => {
                     for idx in 0..array_len {
-                        (idx); // silence warning but expect to be optimized
+                        (idx+1); // silence warning but expect to be optimized
                         _probor_parse_fields_num!($decoder, idx,
                             { $( $item => ( $($props)* ), )* });
                     }
@@ -123,7 +123,7 @@ macro_rules! _probor_dec_named {
                     let idx = try!($decoder.kernel().u64(&(ty, inf))
                         .map_err(|e| $crate::DecodeError::WrongType(
                             "array or object expected", e)));
-                    (idx); // silence warning but expect to be optimized
+                    (idx+1); // silence warning but expect to be optimized
                     _probor_parse_fields_num!($decoder, idx,
                         { $( $item => ( $($props)* ), )* });
                 }

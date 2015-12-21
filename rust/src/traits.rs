@@ -17,7 +17,7 @@ pub trait Encodable {
         -> Result<(), EncodeError>;
 }
 
-pub trait Decodable {
+pub trait Decodable: Sized {
     /// Decode an object or null
     ///
     /// This must be optional return so that any value may become optional and
@@ -26,7 +26,7 @@ pub trait Decodable {
         -> Result<Option<Self>, DecodeError>;
 }
 
-pub trait Decode {
+pub trait Decode: Sized {
     /// Decodes non-null array element and correctly propagates error.
     ///
     /// The `n` is used only for errors
