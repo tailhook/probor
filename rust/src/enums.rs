@@ -160,7 +160,7 @@ macro_rules! probor_enum_encoder_decoder {
                     }
                     Err(e) => {
                         return Err($crate::DecodeError::WrongType(
-                            "array or object expected", e));
+                            "array or object expected (e5)", e));
                     }
                 }
             }
