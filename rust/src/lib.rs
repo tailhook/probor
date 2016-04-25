@@ -1,4 +1,4 @@
-extern crate cbor;
+pub extern crate cbor;
 extern crate byteorder;
 #[cfg(feature="regex_serde")] extern crate regex;
 
