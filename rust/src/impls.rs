@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use cbor::{Decoder, Encoder};
 use cbor::decoder::opt;
 use {Decodable, Input, DecodeError};
@@ -30,6 +32,21 @@ impl<A:Decodable> Decodable for Box<A> {
 }
 
 impl<A:Encodable> Encodable for Box<A> {
+    fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
+    {
+        (**self).encode(e)
+    }
+}
+
+impl<A:Decodable> Decodable for Arc<A> {
+    fn decode_opt<R: Input>(e: &mut Decoder<R>)
+        -> Result<Option<Self>, DecodeError>
+    {
+        A::decode_opt(e).map(|x| x.map(Arc::new))
+    }
+}
+
+impl<A:Encodable> Encodable for Arc<A> {
     fn encode<W: Output>(&self, e: &mut Encoder<W>) -> Result<(), EncodeError>
     {
         (**self).encode(e)
