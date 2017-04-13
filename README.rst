@@ -250,57 +250,51 @@ Similarly in Rust it looks like:
 
 .. code-block:: rust
 
+    #[macro_use] extern crate probor;
+
+    use probor::{Encoder, Encodable};
+    use probor::{Decoder, Config, decode};
+    use std::io::Cursor;
+
+    probor_struct!(
+    #[derive(PartialEq, Eq, Debug)]
     struct Page {
-        url: String,
-        title: String,
-        snippet: Option<String>,
-    }
+        url: String => (#0),
+        title: String => (#1),
+        snippet: Option<String> => (#2 optional),
+    });
 
+    probor_struct!(
+    #[derive(PartialEq, Eq, Debug)]
     struct SearchResults {
-        total_results: u64,
-        results: Vec<Page>,
+        total_results: u64 => (#0),
+        results: Vec<Page> => (#1),
+    });
+
+
+    fn main() {
+        let buf = Vec::new();
+        let mut enc = Encoder::new(buf);
+        SearchResults {
+            total_results: 112,
+            results: vec![Page {
+                url: "http://url1.example.com".to_string(),
+                title: "One example".to_string(),
+                snippet: None,
+            }, Page {
+                url: "http://url2.example.com".to_string(),
+                title: "Two example".to_string(),
+                snippet: Some("Example Two".to_string()),
+            }],
+        }.encode(&mut enc).unwrap();
+        let sr: SearchResults = decode(
+            &mut Decoder::new(Config::default(), Cursor::new(enc.into_writer())))
+            .unwrap();
+        println!("Results {:?}", sr);
     }
 
-    impl ProborEncode for Page {
-        fn encode(&self, e) -> Result<(), EncodeError> {
-            probor_enc_header!(e, 3, optional={2: self.snippet});
-            probor_enc_field!(e, 0, "url", self.url, text);
-            probor_enc_field!(e, 1, "title", self.title, text);
-            probor_enc_field!(e, 2, "snippet", self.snippet, optional text);
-        }
-    }
-    impl ProborDecode for Page {
-        fn decode(&self, e) -> Result<(), DecodeError> {
-            probor_dec_struct! {
-                url (0) => d.text(),
-                title (1) => d.text(),
-                snippet (2) => d.text(),
-            };
-            probor_dec_require!(url, title);
-            Ok(Page { url: url, title: title, snippet: snippet })
-        }
-    }
-    impl ProborEncode for SearchResults {
-        fn encode(&self, e) -> Result<(), EncodeError> {
-            probor_header!(e, 3);
-            probor_field!(e, 0, "total_results", self.total_results, u64);
-            probor_field!(e, 1, "results", self.results, array Page);
-        }
-    }
-    impl ProborDecode for SearchResults {
-        fn decode(&self, e) -> Result<(), DecodeError> {
-            probor_dec_struct! {
-                total_results (0) => d.text(),
-                results (1) => { d.decode_array_of(Page) },
-            };
-            probor_dec_require!(total_results, results);
-            Ok(SearchResults { total_results: total_results,
-                               results: results })
-        }
-    }
-
-The rust code is a bit longer which is bearable for rust.  It's hugely based on
-macros, which may seem as similar to code generation. Still we seem it better
+The Rust example is a bit longer which is bearable for rust.  It's hugely based on
+macros, which may seem as similar to code generation. Still, we find it better,
 because you are in control of at least the following things:
 
 1. The specific types used (e.g. u64 for int)
@@ -308,12 +302,12 @@ because you are in control of at least the following things:
    ``derive`` and ``repr`` and may use ``struct T(X, Y)``)
 3. How objects are created (e.g. use ``VecDeque`` or ``BTreeMap`` instead of
    default ``Vec`` and ``HashMap``)
-4. How missing fields are handled. E.g. you can provide default for missing
-   field instead of using ``Option<T>``
-5. Can include application specific validation code
+4. How missing fields are handled (e.g. you can provide defaults for missing
+   fields instead of using ``Option<T>``)
+5. You can include application-specific validation code
 
-At the end of the day writing parser explicitly with few helper macros looks
-like much better idea than adding all the data as the meta information to the
+At the end of the day, writing a parser explicitly with few helper macros looks
+like a much better idea than adding all the data as the meta information to the
 schema file.
 
 
@@ -333,8 +327,8 @@ TBD
 In Unsupported Languages
 ````````````````````````
 
-In language which doesn't support algebraic types they are implemented
-by tying together few normal types. E.g. the following type in rust:
+In language which doesn't support algebraic types, they are implemented
+by tying together few normal types. E.g. the following type in Rust:
 
 .. code-block:: rust
 
@@ -365,24 +359,23 @@ Is encoded like this in python:
 
         probor_protocol = ...
 
-
     HtmlElement.probor_protocol = enum({
         (0, 'Tag'): Tag,
         (1, 'Text'): Text,
-        })
+    })
 
 Then you can do pattern-matching-like things by using
 ``functools.singledispatch`` (in Python3.4) or just use ``isinstance``.
 
-.. note:: The purescript compiles types similarly. It's unchecked but
-   I believe probor's searization into javascript, should be compatible with
-   purescript types.
+.. note:: The purescript compiles types similarly. It's unchecked, but
+   I believe probor's searization into Javascript should be compatible with
+   PureScript types.
 
 
 Forward/Backward Compatibility
 ==============================
 
-Comparing with protobuf the probor serializer always considers all fields as
+Comparing with protobuf, the probor serializer always considers all fields as
 optional. The required fields are only in IDL, so if your future type is smart
 enough to
 
