@@ -306,6 +306,11 @@ because you are in control of at least the following things:
    fields instead of using ``Option<T>``)
 5. You can include application-specific validation code
 
+.. note:: Leaving the parentheses empty will result in the field
+   strings stored as part of the payload.
+   This would undermine the goal of reducing byte count of data stored,
+   and in such cases, one may as well use CBOR directly.
+
 At the end of the day, writing a parser explicitly with few helper macros looks
 like a much better idea than adding all the data as the meta information to the
 schema file.
