@@ -1,8 +1,4 @@
 #[macro_export]
-macro_rules! _probor_pattern {
-    ($x:pat) => { $x }
-}
-#[macro_export]
 macro_rules! _probor_enum_pattern {
     ($name:ident $variant:ident) => {
         $name::$variant
