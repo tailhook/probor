@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Skip","Type which supports skipping a number of bytes."]]});

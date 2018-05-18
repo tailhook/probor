@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EncodeError",""]],"struct":[["Encoder","The actual encoder type definition"],["GenericEncoder","A generic encoder encodes a `Value`."]],"type":[["EncodeResult",""]]});

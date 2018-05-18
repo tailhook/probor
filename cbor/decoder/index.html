@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `decoder` mod in crate `cbor`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, decoder">
+
+    <title>cbor::decoder - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css"
+          id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle">
+    <script src="../../storage.js"></script>
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        
+        <p class='location'>Module decoder</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'><a href='../index.html'>cbor</a></p><script>window.sidebarCurrent = {name: 'decoder', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div>
+    </nav>
+
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../../theme.js"></script>
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content"><h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>cbor</a>::<wbr><a class="mod" href=''>decoder</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/cbor/decoder.rs.html#6-1542' title='goto source code'>[src]</a></span></h1><div class='docblock'><p>CBOR (<a href="http://tools.ietf.org/html/rfc7049">RFC 7049</a>)
+decoder implementation supporting the following features:</p>
+<ul>
+<li>Generic decoding using an intermediate representation</li>
+<li>Tag validation</li>
+<li>Resource limits (e.g. maximum nesting level)</li>
+<li>Direct decoding into Rust types</li>
+<li>Indefinite sized bytes, strings, arrays and objects</li>
+</ul>
+<p>The module is structured as follows:</p>
+<ol>
+<li><code>Kernel</code> contains the basic decoding functionality, capable of
+decoding simple unstructured types.</li>
+<li><code>Decoder</code> directly decodes into native Rust types.</li>
+<li><code>GenericDecoder</code> handles arbitrary CBOR items and decodes them
+into an <code>Value</code> AST.</li>
+</ol>
+<h1 id="example-1-direct-decoding" class="section-header"><a href="#example-1-direct-decoding">Example 1: Direct decoding</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">cbor</span>::{<span class="ident">Config</span>, <span class="ident">Decoder</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Cursor</span>;
+
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">Decoder</span>::<span class="ident">new</span>(<span class="ident">Config</span>::<span class="ident">default</span>(), <span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="number">0u8</span>]));
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">0</span>), <span class="ident">d</span>.<span class="ident">u64</span>().<span class="ident">ok</span>())</pre>
+<h1 id="example-2-direct-decoding-nested-array" class="section-header"><a href="#example-2-direct-decoding-nested-array">Example 2: Direct decoding (nested array)</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">cbor</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rustc_serialize</span>;
+
+<span class="kw">use</span> <span class="ident">cbor</span>::{<span class="ident">Config</span>, <span class="ident">Decoder</span>};
+<span class="kw">use</span> <span class="ident">rustc_serialize</span>::<span class="ident">hex</span>::<span class="ident">FromHex</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Cursor</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">input</span>   <span class="op">=</span> <span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="string">&quot;828301020383010203&quot;</span>.<span class="ident">from_hex</span>().<span class="ident">unwrap</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dec</span> <span class="op">=</span> <span class="ident">Decoder</span>::<span class="ident">new</span>(<span class="ident">Config</span>::<span class="ident">default</span>(), <span class="ident">input</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span> .. <span class="ident">dec</span>.<span class="ident">array</span>().<span class="ident">unwrap</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vec</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span> .. <span class="ident">dec</span>.<span class="ident">array</span>().<span class="ident">unwrap</span>() {
+            <span class="ident">vec</span>.<span class="ident">push</span>(<span class="ident">dec</span>.<span class="ident">u8</span>().<span class="ident">unwrap</span>())
+        }
+        <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">vec</span>)
+    }
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]], <span class="ident">res</span>)
+}</pre>
+<h1 id="example-3-generic-decoding" class="section-header"><a href="#example-3-generic-decoding">Example 3: Generic decoding</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">cbor</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rustc_serialize</span>;
+
+<span class="kw">use</span> <span class="ident">cbor</span>::{<span class="ident">Config</span>, <span class="ident">GenericDecoder</span>};
+<span class="kw">use</span> <span class="ident">cbor</span>::<span class="ident">value</span>::{<span class="self">self</span>, <span class="ident">Key</span>};
+<span class="kw">use</span> <span class="ident">rustc_serialize</span>::<span class="ident">hex</span>::<span class="ident">FromHex</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Cursor</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="string">&quot;a2616101028103&quot;</span>.<span class="ident">from_hex</span>().<span class="ident">unwrap</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">GenericDecoder</span>::<span class="ident">new</span>(<span class="ident">Config</span>::<span class="ident">default</span>(), <span class="ident">input</span>);
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">value</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span>     <span class="ident">c</span> <span class="op">=</span> <span class="ident">value</span>::<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">value</span>);
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="ident">c</span>.<span class="ident">field</span>(<span class="string">&quot;a&quot;</span>).<span class="ident">u8</span>());
+    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="number">3</span>), <span class="ident">c</span>.<span class="ident">get</span>(<span class="ident">Key</span>::<span class="ident">u64</span>(<span class="number">2</span>)).<span class="ident">at</span>(<span class="number">0</span>).<span class="ident">u8</span>())
+}</pre>
+<h1 id="example-4-direct-decoding-optional-value" class="section-header"><a href="#example-4-direct-decoding-optional-value">Example 4: Direct decoding (optional value)</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">cbor</span>::{<span class="ident">opt</span>, <span class="ident">Config</span>, <span class="ident">Decoder</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Cursor</span>;
+
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">Decoder</span>::<span class="ident">new</span>(<span class="ident">Config</span>::<span class="ident">default</span>(), <span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="number">0xF6</span>]));
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="prelude-val">None</span>, <span class="ident">opt</span>(<span class="ident">d</span>.<span class="ident">u8</span>()).<span class="ident">unwrap</span>())</pre>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.BytesIter.html"
+                                  title='struct cbor::decoder::BytesIter'>BytesIter</a></td>
+                           <td class='docblock-short'>
+                                <p>Iterator over the chunks of an indefinite bytes item.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Config.html"
+                                  title='struct cbor::decoder::Config'>Config</a></td>
+                           <td class='docblock-short'>
+                                <p><code>Config</code> contains various settings which limit resource consumption
+or enable certain validation options. Please note that the various
+maximum length/size values apply to an individual element only.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Decoder.html"
+                                  title='struct cbor::decoder::Decoder'>Decoder</a></td>
+                           <td class='docblock-short'>
+                                <p>The actual decoder type definition</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.GenericDecoder.html"
+                                  title='struct cbor::decoder::GenericDecoder'>GenericDecoder</a></td>
+                           <td class='docblock-short'>
+                                <p>A generic decoder decodes arbitrary CBOR into a <code>Value</code> AST.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Kernel.html"
+                                  title='struct cbor::decoder::Kernel'>Kernel</a></td>
+                           <td class='docblock-short'>
+                                <p>This decoding kernel reads from an underlying <code>std::io::Read</code> type
+primitive CBOR values such as unsigned and signed integers as well
+as raw bytes.
+It forms the basis on which <code>Decoder</code> and <code>GenericDecoder</code> add logic
+for handling <code>Tag</code>s, heterogenous data and generic value decoding.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.TextIter.html"
+                                  title='struct cbor::decoder::TextIter'>TextIter</a></td>
+                           <td class='docblock-short'>
+                                <p>Iterator over the chunks of an indefinite text item.</p>
+
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.DecodeError.html"
+                                  title='enum cbor::decoder::DecodeError'>DecodeError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.maybe.html"
+                                  title='fn cbor::decoder::maybe'>maybe</a></td>
+                           <td class='docblock-short'>
+                                <p>When decoding an item which may be <code>Undefined</code> this function
+will map <code>Undefined</code> to <code>None</code> and any other value to <code>Some(value)</code>.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.opt.html"
+                                  title='fn cbor::decoder::opt'>opt</a></td>
+                           <td class='docblock-short'>
+                                <p>When decoding an optional item, i.e. a <code>Null</code> value has to be
+considered, this function will map <code>Null</code> to <code>None</code> and any
+other value to <code>Some(value)</code>.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.or_break.html"
+                                  title='fn cbor::decoder::or_break'>or_break</a></td>
+                           <td class='docblock-short'>
+                                <p>When decoding an indefinite item, every element item can be a <code>Break</code>
+value. By wrapping it in <code>or_break</code>, this case can be handled more
+conveniently.</p>
+
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.DecodeResult.html"
+                                  title='type cbor::decoder::DecodeResult'>DecodeResult</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.TypeInfo.html"
+                                  title='type cbor::decoder::TypeInfo'>TypeInfo</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt><kbd>?</kbd></dt>
+                    <dd>Show this help dialog</dd>
+                    <dt><kbd>S</kbd></dt>
+                    <dd>Focus the search field</dd>
+                    <dt><kbd>↑</kbd></dt>
+                    <dd>Move up in search results</dd>
+                    <dt><kbd>↓</kbd></dt>
+                    <dd>Move down in search results</dd>
+                    <dt><kbd>↹</kbd></dt>
+                    <dd>Switch tab</dd>
+                    <dt><kbd>&#9166;</kbd></dt>
+                    <dd>Go to active search result</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "cbor";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

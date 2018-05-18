@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Decoder` struct in crate `probor`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Decoder">
+
+    <title>probor::Decoder - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css"
+          id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+    <script src="../storage.js"></script>
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        
+        <p class='location'>Struct Decoder</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.new">new</a><a href="#method.into_reader">into_reader</a><a href="#method.kernel">kernel</a><a href="#method.simple">simple</a><a href="#method.bool">bool</a><a href="#method.u8">u8</a><a href="#method.u16">u16</a><a href="#method.u32">u32</a><a href="#method.u64">u64</a><a href="#method.i8">i8</a><a href="#method.i16">i16</a><a href="#method.i32">i32</a><a href="#method.i64">i64</a><a href="#method.int">int</a><a href="#method.f16">f16</a><a href="#method.f32">f32</a><a href="#method.f64">f64</a><a href="#method.read_bytes">read_bytes</a><a href="#method.bytes">bytes</a><a href="#method.bytes_iter">bytes_iter</a><a href="#method.text">text</a><a href="#method.text_iter">text_iter</a><a href="#method.tag">tag</a><a href="#method.array">array</a><a href="#method.array_begin">array_begin</a><a href="#method.object">object</a><a href="#method.object_begin">object_begin</a><a href="#method.skip">skip</a><a href="#method.text_borrow">text_borrow</a><a href="#method.bytes_borrow">bytes_borrow</a></div><a class="sidebar-title" href="#synthetic-implementations">Auto Trait Implementations</a><div class="sidebar-links"><a href="#impl-Send">Send</a><a href="#impl-Sync">Sync</a></div></div><p class='location'><a href='index.html'>probor</a></p><script>window.sidebarCurrent = {name: 'Decoder', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
+    </nav>
+
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content"><h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>probor</a>::<wbr><a class="struct" href=''>Decoder</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/cbor/decoder.rs.html#633-636' title='goto source code'>[src]</a></span></h1><div class="docblock type-decl"><pre class='rust struct'>pub struct Decoder&lt;R&gt; { /* fields omitted */ }</pre></div><div class='docblock'><p>The actual decoder type definition</p>
+</div>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><table class='table-display'><tbody><tr><td><code>impl&lt;R&gt; <a class="struct" href="../probor/struct.Decoder.html" title="struct probor::Decoder">Decoder</a>&lt;R&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="../byteorder/io/trait.ReadBytesExt.html" title="trait byteorder::io::ReadBytesExt">ReadBytesExt</a>,&nbsp;</span></code><a href='#impl' class='anchor'></a></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#638-856' title='goto source code'>[src]</a></span></td></tr></tbody></table></h3><div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.new' class='fnname'>new</a>(c: <a class="struct" href="../probor/struct.Config.html" title="struct probor::Config">Config</a>, r: R) -&gt; <a class="struct" href="../probor/struct.Decoder.html" title="struct probor::Decoder">Decoder</a>&lt;R&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#639-641' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.into_reader' class="method"><span id='into_reader.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.into_reader' class='fnname'>into_reader</a>(self) -&gt; R</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#643-645' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.kernel' class="method"><span id='kernel.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.kernel' class='fnname'>kernel</a>(&amp;mut self) -&gt; &amp;mut <a class="struct" href="../probor/_cbor/decoder/struct.Kernel.html" title="struct probor::_cbor::decoder::Kernel">Kernel</a>&lt;R&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#647-649' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.simple' class="method"><span id='simple.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.simple' class='fnname'>simple</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="../probor/_cbor/value/enum.Simple.html" title="enum probor::_cbor::value::Simple">Simple</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#651-653' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.bool' class="method"><span id='bool.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.bool' class='fnname'>bool</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#655-657' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.u8' class="method"><span id='u8.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.u8' class='fnname'>u8</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#659-661' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.u16' class="method"><span id='u16.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.u16' class='fnname'>u16</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#663-665' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.u32' class="method"><span id='u32.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.u32' class='fnname'>u32</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#667-669' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.u64' class="method"><span id='u64.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.u64' class='fnname'>u64</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#671-673' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.i8' class="method"><span id='i8.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.i8' class='fnname'>i8</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i8.html">i8</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#675-677' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.i16' class="method"><span id='i16.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.i16' class='fnname'>i16</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i16.html">i16</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#679-681' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.i32' class="method"><span id='i32.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.i32' class='fnname'>i32</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#683-685' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.i64' class="method"><span id='i64.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.i64' class='fnname'>i64</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#687-689' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.int' class="method"><span id='int.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.int' class='fnname'>int</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="../probor/_cbor/value/enum.Int.html" title="enum probor::_cbor::value::Int">Int</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#691-693' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.f16' class="method"><span id='f16.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.f16' class='fnname'>f16</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#695-697' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.f32' class="method"><span id='f32.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.f32' class='fnname'>f32</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#699-701' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.f64' class="method"><span id='f64.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.f64' class='fnname'>f64</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#703-705' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><h4 id='method.read_bytes' class="method"><span id='read_bytes.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.read_bytes' class='fnname'>read_bytes</a>(&amp;mut self, b: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;mut [</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#714-720' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode a single byte string into the given buffer.</p>
+<p>The provided buffer must be large enough to hold the entire
+byte string, otherwise an error is returned.</p>
+<p>Please note that indefinite byte strings are not supported by this
+method (Consider using <code>Decoder::bytes_iter()</code> for this use-case).</p>
+</div><h4 id='method.bytes' class="method"><span id='bytes.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.bytes' class='fnname'>bytes</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#726-735' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode a single byte string.</p>
+<p>Please note that indefinite byte strings are not supported by this
+method (Consider using <code>Decoder::bytes_iter()</code> for this use-case).</p>
+</div><h4 id='method.bytes_iter' class="method"><span id='bytes_iter.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.bytes_iter' class='fnname'>bytes_iter</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../probor/_cbor/decoder/struct.BytesIter.html" title="struct probor::_cbor::decoder::BytesIter">BytesIter</a>&lt;R&gt;, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#738-743' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode an indefinite byte string.</p>
+</div><h4 id='method.text' class="method"><span id='text.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.text' class='fnname'>text</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#749-759' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode a single UTF-8 encoded String.</p>
+<p>Please note that indefinite strings are not supported by this method
+(Consider using <code>Decoder::text_iter()</code> for this use-case).</p>
+</div><h4 id='method.text_iter' class="method"><span id='text_iter.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.text_iter' class='fnname'>text_iter</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../probor/_cbor/decoder/struct.TextIter.html" title="struct probor::_cbor::decoder::TextIter">TextIter</a>&lt;R&gt;, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#762-767' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode an indefinite string.</p>
+</div><h4 id='method.tag' class="method"><span id='tag.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.tag' class='fnname'>tag</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="../probor/_cbor/types/enum.Tag.html" title="enum probor::_cbor::types::Tag">Tag</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#771-776' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode a <code>Tag</code>.
+If no tag is found an <code>UnexpectedType</code> error is returned.</p>
+</div><h4 id='method.array' class="method"><span id='array.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.array' class='fnname'>array</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#783-795' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode the begin of an array. The length is returned unless it
+exceeds the configured maximum.</p>
+<p>Please note that indefinite arrays are not supported by this method
+(Consider using <code>Decoder::array_begin()</code> for this use-case).</p>
+</div><h4 id='method.array_begin' class="method"><span id='array_begin.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.array_begin' class='fnname'>array_begin</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#803-808' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode the begin of an indefinite array.
+After this one can continue decoding items, but a <code>Break</code> value
+will be encountered at some unknown point.</p>
+<p>(Consider using <code>or_break</code> around every decoding step within an
+indefinite array to handle this case).</p>
+</div><h4 id='method.object' class="method"><span id='object.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.object' class='fnname'>object</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#815-827' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode the begin of an object. The size (number of key-value pairs)
+is returned unless it exceeds the configured maximum.</p>
+<p>Please note that indefinite objects are not supported by this method
+(Consider using <code>Decoder::object_begin</code> for this use-case).</p>
+</div><h4 id='method.object_begin' class="method"><span id='object_begin.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.object_begin' class='fnname'>object_begin</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#835-840' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode the begin of an indefinite object.
+After this one can continue decoding items, but a <code>Break</code> value
+will be encountered at some unknown point.</p>
+<p>(Consider using <code>or_break</code> around every decoding step within an
+indefinite object to handle this case).</p>
+</div></div><h3 id='impl-1' class='impl'><span class='in-band'><table class='table-display'><tbody><tr><td><code>impl&lt;R&gt; <a class="struct" href="../probor/struct.Decoder.html" title="struct probor::Decoder">Decoder</a>&lt;R&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="../probor/_cbor/skip/trait.Skip.html" title="trait probor::_cbor::skip::Skip">Skip</a> + <a class="trait" href="../byteorder/io/trait.ReadBytesExt.html" title="trait byteorder::io::ReadBytesExt">ReadBytesExt</a>,&nbsp;</span></code><a href='#impl-1' class='anchor'></a></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#858-962' title='goto source code'>[src]</a></span></td></tr></tbody></table></h3><div class='impl-items'><h4 id='method.skip' class="method"><span id='skip.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.skip' class='fnname'>skip</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#866-869' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Skip over a single CBOR value.</p>
+<p>Please note that this function does not validate the value hence
+it might not even be well-formed CBOR. Instead <code>skip</code> is an
+optimisation over <code>GenericDecoder::value()</code> and generally only
+determines as much information as necessary to safely skip a value
+without keeping all of it in memory.</p>
+</div></div><h3 id='impl-2' class='impl'><span class='in-band'><table class='table-display'><tbody><tr><td><code>impl&lt;R&gt; <a class="struct" href="../probor/struct.Decoder.html" title="struct probor::Decoder">Decoder</a>&lt;R&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="../probor/_cbor/slice/trait.ReadSlice.html" title="trait probor::_cbor::slice::ReadSlice">ReadSlice</a> + <a class="trait" href="../byteorder/io/trait.ReadBytesExt.html" title="trait byteorder::io::ReadBytesExt">ReadBytesExt</a>,&nbsp;</span></code><a href='#impl-2' class='anchor'></a></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#964-996' title='goto source code'>[src]</a></span></td></tr></tbody></table></h3><div class='impl-items'><h4 id='method.text_borrow' class="method"><span id='text_borrow.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.text_borrow' class='fnname'>text_borrow</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#969-979' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode a single UTF-8 encoded String and borrow it from underlying
+buffer instead of allocating.</p>
+<p>Please note that indefinite strings are not supported by this method.</p>
+</div><h4 id='method.bytes_borrow' class="method"><span id='bytes_borrow.v' class='invisible'><table class='table-display'><tbody><tr><td><code>pub fn <a href='#method.bytes_borrow' class='fnname'>bytes_borrow</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>, <a class="enum" href="../probor/_cbor/enum.DecodeError.html" title="enum probor::_cbor::DecodeError">DecodeError</a>&gt;</code></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/cbor/decoder.rs.html#986-995' title='goto source code'>[src]</a></td></tr></tbody></table></span></h4><div class='docblock'><p>Decode a single byte string and borrow it from underlying
+buffer instead of allocating.</p>
+<p>Please note that indefinite byte strings are not supported by this
+method.</p>
+</div></div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+            <div id='implementations-list'>
+        </div>
+                <h2 id='synthetic-implementations' class='small-section-header'>
+                  Auto Trait Implementations<a href='#synthetic-implementations' class='anchor'></a>
+                </h2>
+                <div id='synthetic-implementations-list'>
+            <h3 id='impl-Send' class='impl'><span class='in-band'><table class='table-display'><tbody><tr><td><code>impl&lt;R&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> for <a class="struct" href="../probor/struct.Decoder.html" title="struct probor::Decoder">Decoder</a>&lt;R&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a>,&nbsp;</span></code><a href='#impl-Send' class='anchor'></a></span></td><td><span class='out-of-band'></span></td></tr></tbody></table></h3><div class='impl-items'></div><h3 id='impl-Sync' class='impl'><span class='in-band'><table class='table-display'><tbody><tr><td><code>impl&lt;R&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> for <a class="struct" href="../probor/struct.Decoder.html" title="struct probor::Decoder">Decoder</a>&lt;R&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a>,&nbsp;</span></code><a href='#impl-Sync' class='anchor'></a></span></td><td><span class='out-of-band'></span></td></tr></tbody></table></h3><div class='impl-items'></div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt><kbd>?</kbd></dt>
+                    <dd>Show this help dialog</dd>
+                    <dt><kbd>S</kbd></dt>
+                    <dd>Focus the search field</dd>
+                    <dt><kbd>↑</kbd></dt>
+                    <dd>Move up in search results</dd>
+                    <dt><kbd>↓</kbd></dt>
+                    <dd>Move down in search results</dd>
+                    <dt><kbd>↹</kbd></dt>
+                    <dd>Switch tab</dd>
+                    <dt><kbd>&#9166;</kbd></dt>
+                    <dd>Go to active search result</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "probor";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
